@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:rto_management/controllers/main-application-controller.dart';
 import 'package:rto_management/utils/constants.dart';
+import 'package:rto_management/views/dashboard/home-screen.dart';
+import 'package:rto_management/views/dashboard/permit-applications/permit-applications-screen.dart';
+import 'package:rto_management/views/dashboard/traffic-challans/traffic-challans-screen.dart';
+import 'package:rto_management/views/dashboard/vehicle-registration/vehicle-registration-screen.dart';
+
+import 'licence-management/licence-management-screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -10,6 +18,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  final MainApplicationController _mainApplicationController =Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,48 +29,52 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Column(
           children: [
             SizedBox(height: AppBar().preferredSize.height + 5.h),
-            Row(
-              children: [
-                SizedBox(width: 5.w),
-                Expanded(
-                  child: Container(
-                    height: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.sp),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black38,
-                          spreadRadius: .5,
-                          offset: Offset(4, 3),
-                          blurRadius: 10,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: 5.w),
-                Expanded(
-                  child: Container(
-                    height: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.sp),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black38,
-                          spreadRadius: .5,
-                          offset: Offset(4, 5),
-                          blurRadius: 10,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: 5.w),
-              ],
-            )
+            SizedBox(
+              width: 100.w,
+              height: 30.h,
+              child: Row(
+                children: [
+                  _card("assets/dl.png",1),
+                  _card("assets/vechle.png",0),
+
+                ],
+              ),
+            ),
+            SizedBox(height: 3.h),
+            SizedBox(
+              width: 100.w,
+              height: 30.h,
+              child: Row(
+                children: [
+                  _card("assets/challan.png",4),
+                  _card("assets/permit.png",3),
+                ],
+              ),
+            ),
           ],
+        ),
+      ),
+    );
+  }
+  Widget _card(String url, int index ){
+    return    Expanded(
+      child: InkWell(
+        onTap: (){
+          _mainApplicationController.bottomNavIdx.value = index;
+          Get.to(()=>const HomeScreen());
+        },
+        child: Card(
+          elevation: 10,
+          child: Container(
+            decoration:  BoxDecoration(
+
+              image: DecorationImage(
+                image: AssetImage(url),
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
+              ),
+            ),
+          ),
         ),
       ),
     );
