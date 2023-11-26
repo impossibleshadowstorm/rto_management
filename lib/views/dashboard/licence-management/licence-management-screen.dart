@@ -22,7 +22,8 @@ class _LicenceManagementScreenState extends State<LicenceManagementScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       body: SafeArea(
-        child: SizedBox(
+        child: Container(
+          padding: EdgeInsets.only(top: 2.5.w),
           height: 100.h,
           width: 100.w,
           child: Column(
@@ -164,10 +165,10 @@ class _LicenceManagementScreenState extends State<LicenceManagementScreen> {
                     color: Colors.white,
                   ),
                   child: SingleChildScrollView(
-                    child:
-                        _licenceManagementController.licenceTypeTab.value == 0
-                            ? learnerLicence()
-                            : drivingLicence(),
+                    physics: const BouncingScrollPhysics(),
+                    child: Obx(() => _licenceManagementController.licenceTypeTab.value == 0
+                        ? learnerLicence()
+                        : drivingLicence()),
                   ),
                 ),
               ),
