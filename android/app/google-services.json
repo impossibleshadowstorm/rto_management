@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "764657891795",
+    "project_id": "rto-management-9d33c",
+    "storage_bucket": "rto-management-9d33c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764657891795:android:9604c9210af4f9a44fd726",
+        "android_client_info": {
+          "package_name": "com.example.rto_management"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQezGbRP4UlpG5hCrUjN6qhXoiz2UHQ9k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
