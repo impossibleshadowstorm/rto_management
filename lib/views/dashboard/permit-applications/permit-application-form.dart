@@ -2,20 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:rto_management/controllers/trafic-challan-controller.dart';
+import 'package:rto_management/controllers/permit-application-controller.dart';
 import 'package:rto_management/utils/constants.dart';
+import 'package:rto_management/utils/dialogs.dart';
 import 'package:rto_management/utils/toasts.dart';
-import 'package:rto_management/views/dashboard/traffic-challans/challan-payment-screen.dart';
 
-class TrafficChallanScreen extends StatefulWidget {
-  const TrafficChallanScreen({super.key});
+class PermitApplicationForm extends StatefulWidget {
+  const PermitApplicationForm({super.key});
 
   @override
-  State<TrafficChallanScreen> createState() => _TrafficChallanScreenState();
+  State<PermitApplicationForm> createState() => _PermitApplicationFormState();
 }
 
-class _TrafficChallanScreenState extends State<TrafficChallanScreen> {
-  final TrafficChallanController _trafficChallanController = Get.find();
+class _PermitApplicationFormState extends State<PermitApplicationForm> {
+  final PermitApplicationController _permitApplicationController = Get.find();
+  @override
+  void dispose() {
+    super.dispose();
+    _permitApplicationController.resetData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,16 +36,34 @@ class _TrafficChallanScreenState extends State<TrafficChallanScreen> {
               SizedBox(
                 height: AppBar().preferredSize.height,
                 width: 100.w,
-                child: Center(
-                  child: Text(
-                    "Traffic Challan",
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                      color: Colors.black,
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w700,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.black,
+                        size: 19.sp,
+                      ),
                     ),
-                  ),
+                    Text(
+                      "Permit Application",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_back,
+                      color: Colors.transparent,
+                      size: 19.sp,
+                    ),
+                  ],
                 ),
               ),
               Expanded(
@@ -51,31 +74,31 @@ class _TrafficChallanScreenState extends State<TrafficChallanScreen> {
                       SizedBox(height: 5.w),
                       customTextField(
                         "RC Number",
-                        _trafficChallanController.rcNumber,
+                        _permitApplicationController.rcNumber,
                         "text",
                       ),
                       SizedBox(height: 3.5.w),
                       customTextField(
-                        "State",
-                        _trafficChallanController.state,
-                        "text",
+                        "Tax Receipt Number",
+                        _permitApplicationController.taxReceipt,
+                        "number",
                       ),
                       SizedBox(height: 3.5.w),
                       customTextField(
-                        "District",
-                        _trafficChallanController.district,
-                        "text",
+                        "Insurance Number",
+                        _permitApplicationController.insurance,
+                        "number",
                       ),
                       SizedBox(height: 3.5.w),
                       customTextField(
-                        "Challan Number",
-                        _trafficChallanController.challanNumber,
+                        "Previous Permit Number",
+                        _permitApplicationController.previousPermit,
                         "number",
                       ),
                       SizedBox(height: 5.h),
-                      // Submit Button
+                      // Upload Button
                       Obx(() {
-                        return _trafficChallanController.submitting.value
+                        return _permitApplicationController.submitting.value
                             ? Container(
                                 height: 60,
                                 width: 100.w,
@@ -90,21 +113,48 @@ class _TrafficChallanScreenState extends State<TrafficChallanScreen> {
                               )
                             : InkWell(
                                 onTap: () async {
-                                  if (_trafficChallanController
+                                  if (_permitApplicationController
                                               .rcNumber.text.length <
                                           10 ||
-                                      _trafficChallanController
-                                              .state.text.length <
-                                          3 ||
-                                      _trafficChallanController
-                                              .district.text.length <
+                                      _permitApplicationController
+                                              .taxReceipt.text.length <
+                                          5 ||
+                                      _permitApplicationController
+                                              .insurance.text.length <
                                           5) {
                                     Toasts.showErrorToast(
                                       "Invalid Data",
                                       "Please Fill the Data Correctly..!",
                                     );
                                   } else {
-                                    Get.to(() => const PaymentScreen());
+                                    int response =
+                                        await _permitApplicationController
+                                            .addPermitApplication();
+
+                                    if (response == 0) {
+                                      Toasts.showErrorToast(
+                                        "Error",
+                                        "Unable to Process Request",
+                                      );
+                                    } else if (response == 1) {
+                                      Toasts.showErrorToast(
+                                        "Already Exists",
+                                        "Permit Application already Exists on this RC Number..!",
+                                      );
+                                    } else {
+                                      if (mounted) {
+                                        String challan =
+                                            _permitApplicationController
+                                                .generateEChallanNumber();
+                                        _permitApplicationController
+                                            .resetData();
+                                        CustomDialogs.showSuccessModal(
+                                          context,
+                                          "Success",
+                                          "Your application has been saved..! Your challan Number is $challan",
+                                        );
+                                      }
+                                    }
                                   }
                                 },
                                 child: Container(
@@ -115,7 +165,7 @@ class _TrafficChallanScreenState extends State<TrafficChallanScreen> {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      "Pay Challan",
+                                      "Submit",
                                       style: GoogleFonts.poppins(
                                         color: Constants.yellowColor,
                                         fontSize: 18.sp,

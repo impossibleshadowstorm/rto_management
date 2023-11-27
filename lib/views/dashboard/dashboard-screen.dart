@@ -18,7 +18,8 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final MainApplicationController _mainApplicationController =Get.find();
+  final MainApplicationController _mainApplicationController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,9 +35,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               height: 30.h,
               child: Row(
                 children: [
-                  _card("assets/dl.png",1),
-                  _card("assets/vechle.png",0),
-
+                  _card("assets/dl.png", 1),
+                  _card("assets/vechle.png", 0),
                 ],
               ),
             ),
@@ -46,8 +46,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               height: 30.h,
               child: Row(
                 children: [
-                  _card("assets/challan.png",4),
-                  _card("assets/permit.png",3),
+                  _card("assets/challan.png", 4),
+                  _card("assets/permit.png", 3),
                 ],
               ),
             ),
@@ -56,18 +56,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
-  Widget _card(String url, int index ){
-    return    Expanded(
+
+  Widget _card(String url, int index) {
+    return Expanded(
       child: InkWell(
-        onTap: (){
+        onTap: () {
           _mainApplicationController.bottomNavIdx.value = index;
-          Get.to(()=>const HomeScreen());
+          Get.to(() => const HomeScreen());
         },
         child: Card(
           elevation: 10,
           child: Container(
-            decoration:  BoxDecoration(
-
+            decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(url),
                 fit: BoxFit.cover,

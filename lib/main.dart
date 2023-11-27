@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:rto_management/controllers/licence-management-controller.dart';
 import 'package:rto_management/controllers/main-application-controller.dart';
+import 'package:rto_management/controllers/permit-application-controller.dart';
+import 'package:rto_management/controllers/trafic-challan-controller.dart';
 import 'package:rto_management/controllers/vehicle-transfer-controller.dart';
 import 'package:rto_management/services/global.dart';
 import 'package:rto_management/views/splash-screen.dart';
@@ -21,6 +23,10 @@ class MyApp extends StatelessWidget {
       Get.put(VehicleRegistrationTransferController());
   LicenceManagementController licenceManagementController =
       Get.put(LicenceManagementController());
+  PermitApplicationController permitApplicationController =
+      Get.put(PermitApplicationController());
+  TrafficChallanController trafficChallanController =
+      Get.put(TrafficChallanController());
 
   @override
   Widget build(BuildContext context) {
