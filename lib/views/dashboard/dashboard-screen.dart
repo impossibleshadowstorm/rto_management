@@ -24,9 +24,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Constants.backgroundColor,
-      body: SizedBox(
+      body: Container(
         height: 100.h,
         width: 100.w,
+        padding: EdgeInsets.symmetric(horizontal: 2.5.w),
         child: Column(
           children: [
             SizedBox(height: AppBar().preferredSize.height + 5.h),
