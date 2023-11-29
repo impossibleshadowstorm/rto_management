@@ -167,6 +167,7 @@ class _VehicleRegistrationTransferFormState
                           ),
                         ),
                       ),
+
                       SizedBox(height: 5.w),
                       SizedBox(
                         width: 100.w,
@@ -275,10 +276,13 @@ class _VehicleRegistrationTransferFormState
                                             .initiateTransfer() ==
                                         1) {
                                       if (mounted) {
+                                        String eChallan =
+                                            _vehicleRegistrationTransferController
+                                                .generateEChallanNumber();
                                         CustomDialogs.showSuccessModal(
                                           context,
                                           "Successful",
-                                          "Your Application for Vehicle Registration Transfer is successfully registered..!",
+                                          "Your Application for Vehicle Registration Transfer is successfully registered..!\nE-Challan Number: $eChallan\n Please Copy it for future..!",
                                         );
                                       }
                                     } else if (await _vehicleRegistrationTransferController

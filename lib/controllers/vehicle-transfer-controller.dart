@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -113,7 +114,9 @@ class VehicleRegistrationTransferController extends GetxController {
     }
 
     try {
-      final ref = FirebaseStorage.instance.ref("files").child(fileName!);
+      final ref = FirebaseStorage.instance
+          .ref("files")
+          .child("${fileName!}${DateTime.now().toString()}");
       if (type == "insurance") {
         await ref.putFile(insurancePhoto!);
       } else if (type == "rc") {
@@ -179,6 +182,7 @@ class VehicleRegistrationTransferController extends GetxController {
         'vehicleNumber': vehicleNumber,
         'engineNumber': engineNumber,
         'chassisNumber': chassisNumber,
+        "e-challan": generateEChallanNumber(),
       });
 
       // If successful, return 1
@@ -190,5 +194,31 @@ class VehicleRegistrationTransferController extends GetxController {
       submitting.value = false;
       return 0;
     }
+  }
+
+  String generateEChallanNumber() {
+    // Get the initial 4 characters from rcNumber
+    String rcPrefix = vehicleNumberController.text.substring(0, 4);
+
+    // Get the initial 4 characters from taxReceipt
+    String taxPrefix = engineNumberController.text.substring(0, 4);
+
+    // Get the current date in text (yyyyMMdd format)
+    String currentDate =
+        DateFormat('yyyyMMdd').format(DateTime.now()).substring(6);
+
+    // Get the current month in text (MM format)
+    // String currentMonth = DateFormat('MM').format(DateTime.now());
+    String currentMonth =
+        DateFormat('MMM').format(DateTime.now()).toUpperCase();
+
+    // Get the initial 4 characters from insurance
+    String insurancePrefix = chassisNumberController.text.substring(0, 2);
+
+    // Concatenate all the components to form the eChallan number
+    String eChallanNumber =
+        '$rcPrefix$taxPrefix$currentDate$currentMonth$insurancePrefix';
+
+    return eChallanNumber;
   }
 }
